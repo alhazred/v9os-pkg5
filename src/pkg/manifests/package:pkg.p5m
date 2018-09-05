@@ -463,16 +463,7 @@ license cr_Oracle license=cr_Oracle
 #depend type=group fmri=package/pkg/zones-proxy #    variant.opensolaris.zone=nonglobal
 # cross zone dependency on linked image metadata
 #depend type=parent fmri=feature/package/dependency/self #    variant.opensolaris.zone=nonglobal
-depend type=require fmri=crypto/ca-certificates
+depend type=require fmri=web/ca-bundle
 # CFFI import is done in C code, so it isn't picked up by pkgdepend
-depend type=require fmri=library/python/cffi
-depend type=require fmri=library/python/cherrypy
-depend type=require fmri=library/python/cryptography
-depend type=require fmri=library/python/jsonrpclib
-depend type=require fmri=library/python/jsonschema
-depend type=require fmri=library/python/mako
-depend type=require fmri=library/python/ply
-depend type=require fmri=library/python/pybonjour
-depend type=require fmri=library/python/pycurl
-depend type=require fmri=library/python/pyopenssl
-depend type=require fmri=library/python/simplejson@3.6.5
+depend type=require fmri=library/python-2/cffi-27
+depend type=require fmri=web/ca-bundle

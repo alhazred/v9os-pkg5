@@ -23,6 +23,7 @@
 
 PKGVERS_COMPONENT = 0.5.11
 PKGVERS_BUILTON   = 5.11
+BUILDNUM          = 151001
 UPDATENUM         = 0
 SRUNUM            = 0
 PLATNUM           = 0
@@ -30,15 +31,17 @@ PLATNUM           = 0
 #	hg tags | \
 #	nawk '$$1 ~ /^s11u$(UPDATENUM)b[0-9]*/ {print substr($$1, 7) + 0; exit}'
 #BUILDID           = $(BUILDID.cmd:sh)
-BUILDID           = 151
-NIGHTLYID:sh      = hg parents --template '{rev}' 2>/dev/null || git rev-list --all | wc -l | sed s/\ //g
-CHANGESET:sh      = hg id -i 2>/dev/null || git log --pretty=format:'%h' -1
-PKGVERS_BRANCH    = \
-	$(PKGVERS_COMPONENT).$(UPDATENUM).$(SRUNUM).$(PLATNUM).$(BUILDID).$(NIGHTLYID)
-#PKGVERS           = $(PKGVERS_COMPONENT),$(PKGVERS_BUILTON)-$(PKGVERS_BRANCH)
-# XXX hardcode for now
-BUILD_VERSION     = $(PKGVERS_BUILTON)-0.151.1.8.1
-PKGVERS           = $(PKGVERS_COMPONENT),$(BUILD_VERSION)
+BUILDID           = 0
+#NIGHTLYID:sh      = hg parents --template '{rev}' 2>/dev/null || git rev-list --all | wc -l | sed s/\ //g
+#CHANGESET:sh      = hg id -i 2>/dev/null || git log --pretty=format:'%h' -1
+CHANGESET.cmd     = git show --abbrev-commit | head -1 | awk '{print $$2;}'
+CHANGESET         = $(CHANGESET.cmd:sh)
+CURBUILD.cmd      = \
+	$(PKG) -R / list -H osnet-incorporation | \
+		sed -e 's/.*-0\.\([^ .]*\).*/\1/'
+CURBUILD          = $(CURBUILD.cmd:sh)
+PKGVERS_BRANCH    = 0.$(BUILDNUM)
+PKGVERS           = $(PKGVERS_COMPONENT),$(PKGVERS_BUILTON)-$(PKGVERS_BRANCH)
 ARCH              = $(TARGET_ARCH:-%=%)
 REV:sh            = date +%Y.%m.%d.%H.%M.%S
 
@@ -82,7 +85,7 @@ MOGRIFESTS        = $(MANIFESTS:%.p5m=$(PDIR)/%.mog)
 ALL_MOGRIFESTS    = $(ALL_MANIFESTS:%.p5m=$(PDIR)/%.mog)
 PUBLIFESTS        = $(MANIFESTS:%.p5m=$(PDIR)/%.pub)
 DEPENDED          = $(MANIFESTS:%.p5m=$(PDIR)/%.dep)
-INCORP            = consolidation\:ips\:ips-incorporation
+#INCORP            = consolidation\:ips\:ips-incorporation
 
 PM_TRANSFORMS     = defaults
 
